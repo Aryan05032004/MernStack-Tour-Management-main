@@ -35,9 +35,9 @@ app.use(cookieParser());
 
 // Routes
 
-app.use('auth', authRoute);
-app.use('tours', tourRoute); 
-app.use('users', userRoute);
+app.use('/api/v1/auth', authRoute);
+app.use('/api/v1/tours', tourRoute); 
+app.use('/api/v1/users', userRoute);
 
 
 // Start server

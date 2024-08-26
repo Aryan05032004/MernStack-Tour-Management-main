@@ -28,7 +28,7 @@ export const login = async (req, res) => {
     try {
         // Find the user by email
         const user = await User.findOne({ email: req.body.email });
-        if (!user) return res.status(404).json({ success: false, message: 'User not found' });
+        if (!user){return res.status(404).json({ success: false, message: 'User not found' })};
 
         // Compare the password with the stored hashed password
         const checkCorrectPassword = await bcrypt.compare(req.body.password, user.password);
@@ -46,12 +46,13 @@ export const login = async (req, res) => {
         // Set token in browser cookies and send the response to client
         res.cookie('accessToken', token, {
             httpOnly: true,
-            expires: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000), // 15 days
+            expires:  token.expiresIn // 15 days
         }).status(200).json({
+            success:true, message:'successfully login',
 
-           token,
+        
             data: { ...rest },
-            role,
+           
         });
     } catch (err) {
         res.status(500).json({ success: false, message: 'Failed to log in', error: err.message });
