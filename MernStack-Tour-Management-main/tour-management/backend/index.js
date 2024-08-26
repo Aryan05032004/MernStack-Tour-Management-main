@@ -34,9 +34,11 @@ app.use(cors(corsOptions));
 app.use(cookieParser());
 
 // Routes
-app.use('/api/v1/auth', authRoute);
-app.use('/api/v1/tours', tourRoute); 
-app.use("/api/v1/users", userRoute); 
+
+app.use('auth', authRoute);
+app.use('tours', tourRoute); 
+app.use('users', userRoute);
+
 
 // Start server
 app.listen(port, () => {
