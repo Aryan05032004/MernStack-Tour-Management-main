@@ -5,7 +5,9 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import tourRoute from './routes/tours.js'; 
 import userRoute from './routes/users.js';
-import authRoute from './routes/auth.js';  // Ensure this path is correct
+import authRoute from './routes/auth.js';
+import reviewRoute from './routes/reviews.js'
+import bookingRoute from './routes/bookings.js' // Ensure this path is correct
 
 dotenv.config();
 const app = express();
@@ -38,6 +40,8 @@ app.use(cookieParser());
 app.use('/api/v1/auth', authRoute);
 app.use('/api/v1/tours', tourRoute); 
 app.use('/api/v1/users', userRoute);
+app.use('/api/v1/review', reviewRoute);
+app.use('/api/v1/booking',bookingRoute)
 
 
 // Start server

@@ -79,7 +79,7 @@ export const getAllTour = async (req, res) => {
     const page = parseInt(req.query.page)
      console.log(page);
     try {
-        const tours = await Tour.find({}).skip(page * 8).limit(8);
+        const tours = await Tour.find({}).populate('reviews').skip(page * 8).limit(8);
         res.status(200).json({
             success: true,
             count:tours.length,
@@ -101,7 +101,7 @@ export const getTourBySearch= async(req,res)=>{
 
     try{
    const tours = await Tour.find({ city,distance:{$gte:distance},
- maxGroupSize:{$gte:maxGroupSize}})
+ maxGroupSize:{$gte:maxGroupSize}}).populate("reviews")
  res.status(200).json({
     success: true,
      message:"Successful",
