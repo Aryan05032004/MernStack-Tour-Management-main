@@ -76,10 +76,11 @@ export const getSingleTour = async (req, res) => {
 // Get all tours
 export const getAllTour = async (req, res) => {
 
-    const page = parseInt(req.query.page)
+    const page = parseInt(req.query.page)-1;
      console.log(page);
     try {
         const tours = await Tour.find({}).populate('reviews').skip(page * 8).limit(8);
+
         res.status(200).json({
             success: true,
             count:tours.length,
@@ -93,50 +94,55 @@ export const getAllTour = async (req, res) => {
     }
 };
 
-export const getTourBySearch= async(req,res)=>{
-    const city = new RegExp(req.query.city,'i')
-    const distance = parseInt(req.query.distance)
-    const maxGroupSize = parseInt(req.query.maxGroupSize)
+export const getTourBySearch = async (req, res) => {
+    console.log(req.query); // Log query params
+    const city = new RegExp(req.query.city, 'i');
+    const distance = parseInt(req.query.distance);
+    const maxGroupSize = parseInt(req.query.maxGroupSize);
 
+    try {
+        const tours = await Tour.find({
+            city,
+            distance: { $gte: distance },
+            maxGroupSize: { $gte: maxGroupSize }
+        }).populate("reviews");
 
-    try{
-   const tours = await Tour.find({ city,distance:{$gte:distance},
- maxGroupSize:{$gte:maxGroupSize}}).populate("reviews")
- res.status(200).json({
-    success: true,
-     message:"Successful",
-    data: tours
-})
-    }catch(err){
+        res.status(200).json({
+            success: true,
+            message: "Successful",
+            data: tours
+        });
+    } catch (err) {
         res.status(404).json({
             success: false,
             message: "Failed to get tours"
         });
-
     }
-}
+};
+
 
 
 
 
 // Get featured tours
 export const getFeaturedTour = async (req, res) => {
-
-   
     try {
-        const tours = await Tour.find({featured:true}).skip(page * 8).limit(8);
+        const tours = await Tour.find({ featured: true }).skip(page * 8).limit(8);
         res.status(200).json({
             success: true,
-            count:tours.length,
+            count: tours.length,
             data: tours
         });
     } catch (err) {
-        res.status(404).json({
+        console.error('Error fetching featured tours:', err); // Log the actual error
+        res.status(500).json({
             success: false,
             message: "Failed to get tours"
         });
     }
 };
+
+
 
 //get tour counts
 

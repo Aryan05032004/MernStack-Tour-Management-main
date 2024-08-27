@@ -5,8 +5,9 @@ const router = express.Router()
 import { verifyAdmin } from '../utils/verifyToken.js';
 
 // Route to update an existing tour
-router.put('/:id',verifyUser, updateUser);
+
 import { verifyUser } from '../utils/verifyToken.js';
+router.put('/:id',verifyUser, updateUser);
 
 // Route to delete a tour
 router.delete('/:id',verifyUser, deleteUser);  // Corrected the route to include :id
